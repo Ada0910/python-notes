@@ -5,7 +5,7 @@
      image_path = "E:\\NC\\picture\\img.jpg"
      template_path = "E:\\NC\\picture\\template.jpg"
 安装依赖：
-      E:\UERPA\UERPA\python-3.7.3-embed-amd64\python.exe  -m pip install pyautogui
+      E:\\UERPA\\UERPA\\python-3.7.3-embed-amd64\\python.exe  -m pip install pyautogui
 """
 import cv2
 import pyautogui
@@ -174,5 +174,3 @@ pyautogui.hotkey('ctrl', 'shift', 'esc')  # 调出任务管理器
 pyperclip.copy("你好，可以通过我输入中文哦，哈哈")  # 复制需要输入的内容
 pyautogui.hotkey("ctrl", "v")   # 粘贴内容
 '''
-
-
