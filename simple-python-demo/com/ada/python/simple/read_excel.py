@@ -28,13 +28,18 @@ $ pip3 install openpyxl
 """
 from openpyxl import load_workbook
 # 1.打开 Excel 表格并获取表格名称
-workbook = load_workbook(filename="Python招聘数据（全）.xlsx")
+workbook = load_workbook(filename="E:\\UMS\\RPA\\广东分公司集中结算垫支协同凭证\\7-集中结算垫资协同凭证科目对照表.xlsx")
 print(workbook.sheetnames)
 # 2.通过 sheet 名称获取表格
 sheet = workbook["Sheet1"]
 print(sheet)
 # 3.获取表格的尺寸大小(几行几列数据) 这里所说的尺寸大小，指的是 excel 表格中的数据有几行几列，针对的是不同的 sheet 而言。
 print(sheet.dimensions)
+cell = sheet[sheet.dimensions]
+print(cell)
+for i in cell:
+    for j in i:
+        print(j.value)
 # 4.获取表格内某个格子的数据
 # 1 sheet["A1"]方式
 cell1 = sheet["A1"]
@@ -55,6 +60,7 @@ print(cell)
 for i in cell:
     for j in i:
         print(j.value)
+
         
 """
 方式三：只支持excel的xls格式
