@@ -12,8 +12,11 @@ import pyautogui
 from pynput import mouse
 from PIL import ImageGrab
 
+"""
+查找image_path图中，template_path目标图像的坐标
+"""
 
-# 查找image_path图中，template_path目标图像的坐标 
+
 def match_template(image_path, template_path):
     # 读取图像
     image = cv2.imread(image_path)
@@ -33,7 +36,11 @@ def match_template(image_path, template_path):
     return top_left, bottom_right
 
 
-# 计算出鼠标要点击的x/y坐标
+"""
+计算出鼠标要点击的x/y坐标
+"""
+
+
 def get_click_point(top_left, bottom_right):
     # 鼠标左键点击的坐标
     x = (top_left[0] + bottom_right[0]) / 2
@@ -51,25 +58,67 @@ def on_click(x, y):
     pyautogui.click(x, y)
 
 
-# 查找目标图片并单击
-def find_picture_click(image_path, des_path):
+"""
+# 查找图片并点击
+# orginal_path 存放源目标的图片
+# target_path 目标图片
+# target_file_name 文件名
+# action : single: 单击 , double: 双击, right: 右键
+"""
+
+
+def find_picture_click(orginal_path, target_path, target_file_name, action, extra_x=0, extra_y=0):
+    # 找到最后一个圆点的索引位置
+    last_dot_index = target_file_name.rfind(".")
+    if last_dot_index != -1:
+        file_name = target_file_name[:last_dot_index]  # 获取文件名部分
+        file_extension = target_file_name[last_dot_index + 1:]  # 获取文件名后缀部分
+    else:
+        print("无法解析文件名和文件名后缀")
+    # 截图的保存路径的绝对路径名
+    orginal_path_name = orginal_path + file_name + "_origin." + file_extension
+    # 目标图片的保存路径的绝对路径名
+    target_path_name = target_path + file_name + "." + file_extension
+
     # 截图
     pic = ImageGrab.grab()
 
     # 保存图片
-    pic.save(image_path)
+    pic.save(orginal_path_name)
 
     # 获取目标图片左上角、右下角的坐标
-    top_left, bottom_right = match_template(image_path, des_path)
+    top_left, bottom_right = match_template(orginal_path_name, target_path_name)
     # print("左上角、右下角的坐标分别是：", (top_left, bottom_right))
 
     # 获取鼠标即将点击的x,y坐标
     x, y = get_click_point(top_left, bottom_right)
     # print("鼠标点击的[x,y]坐标是：", (x, y))
 
-    # 点击x,y坐标
-    on_click(x, y)
+    if action == "single":
+        # 单击鼠标左键
+        # 参数1：移动x坐标到指定位置
+        # 参数2：移动y坐标到指定位置
+        # 参数3：点击次数
+        # 无参数：在当前坐标单击
+        pyautogui.click(x + extra_x, y + extra_y)
+    elif action == "double":
+        # 双击鼠标左键
+        # 参数1：移动x坐标到指定位置
+        # 参数2：移动y坐标到指定位置
+        # 无参数：在当前坐标双击
+        pyautogui.doubleClick(x + extra_x, y + extra_y)
+    elif action == "right":
+        # 点击鼠标右键
+        # 参数1：移动x坐标到指定位置
+        # 参数2：移动y坐标到指定位置
+        # 无参数：在当前坐标点击
+        pyautogui.rightClick(x + extra_x, y + extra_y)
 
+
+# -------------------------------使用------------------------------- #
+origin_image_path = "E:\\NC\\picture\\origin\\"
+target_image_path = "E:\\NC\\picture\\"
+find_picture_click(origin_image_path, target_image_path, "ask.jpg", "double",+50)
 
 # PS 附录
 '''
