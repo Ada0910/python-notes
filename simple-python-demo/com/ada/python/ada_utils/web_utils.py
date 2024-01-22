@@ -4,6 +4,7 @@ import platform
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import subprocess
 
 """
 获取谷歌浏览器驱动的路径
@@ -47,17 +48,21 @@ def get_driver_location():
 
 方法二：
 快捷方式添加 --remote-debugging-port=9222 --user-data-dir="E:\\PythonCode\\chrome-dir"
+
+参数实例
+# chrome_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+# remote_debugging_port = 9222
+# user_data_dir = r"E:\PythonCode\chrome-dir"
 """
 
 
-def get_exist_chrome():
+def get_exist_chrome(chrome_path, remote_debugging_port, user_data_dir):
     # 创建 WebDriver 实例并连接到已经打开的浏览器
-    # 需要先启动一个浏览器，并将其启动参数 `remote-debugging-port` 设置为可用的端口号
-    # 例如 Chrome 浏览器可以在命令行中使用 `--remote-debugging-port=9222` 参数启动
-    # 确保已经打开的浏览器支持远程调试，并且与指定的端口号匹配
-    # C:\Program Files\Google\Chrome\Application\chrome.exe --remote-debugging-port=9222
-    # service = Service(executable_path=MajorChromeDriverManager().install())
-    # 快捷方式添加 --remote-debugging-port=9222 --user-data-dir="E:\PythonCode\chrome-dir"
+
+    # 构建命令行命令
+    command = f'"{chrome_path}" --remote-debugging-port={remote_debugging_port} --user-data-dir="{user_data_dir}"'
+    # 执行命令
+    subprocess.Popen(command, shell=True)
     chrome_options = Options()
     chrome_options.add_experimental_option("debuggerAddress", "127.0.0.1:9222")
     return webdriver.Chrome(options=chrome_options)
