@@ -5,6 +5,7 @@ import platform
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import subprocess
+from selenium.webdriver.chrome.service import Service
 
 """
 获取谷歌浏览器驱动的路径
@@ -20,7 +21,7 @@ Raises:
 """
 
 
-def get_driver_location():
+def get_chrome_driver_location():
     os_type = platform.system()
     root_dir = os.path.dirname(os.path.abspath(__file__))
     drivers_dir = os.path.join(root_dir, 'drivers')
@@ -56,7 +57,7 @@ def get_driver_location():
 """
 
 
-def get_exist_chrome(chrome_path, remote_debugging_port, user_data_dir):
+def get_exist_chrome_driver(chrome_path, remote_debugging_port, user_data_dir):
     # 创建 WebDriver 实例并连接到已经打开的浏览器
 
     # 构建命令行命令
@@ -73,9 +74,9 @@ def get_exist_chrome(chrome_path, remote_debugging_port, user_data_dir):
 """
 
 
-def get_new_chrome():
+def get_new_chrome_driver():
     # 检测类型
-    driver_location = get_driver_location()
+    driver_location = get_chrome_driver_location()
     print("谷歌浏览器的路径：{}".format(driver_location))
     if driver_location is None:
         print('不支持的系统类型！')
@@ -84,3 +85,22 @@ def get_new_chrome():
     opt = Options()
     opt.binary_location = driver_location
     return webdriver.Chrome(options=opt)
+
+
+"""
+创建一个edge实例并打开
+"""
+
+
+def get_new_edge_driver(msedgedriver_path_name, download_path):
+    opt = webdriver.EdgeOptions()
+    # 设置自动下载文件选项
+    opt.add_argument("--download.prompt_for_download=false")  # 禁止弹出下载对话框
+    opt.add_argument("--browser.download.folderList=2")  # 禁止弹出下载对话框
+    opt.add_argument("--download.default_directory=" + download_path)  # 设置下载文件的保存路径
+    prefs = {
+        'download.default_directory': download_path}
+    opt.add_experimental_option("prefs", prefs)
+    # 创建 Edge 服务
+    service = Service(msedgedriver_path_name)
+    return webdriver.Edge(service=service, options=opt)

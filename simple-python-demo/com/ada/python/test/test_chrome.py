@@ -107,7 +107,11 @@ def get_new_chrome():
 
     opt = Options()
     opt = webdriver.ChromeOptions()
-
+    download_path = "E:/NC/terminal/template"
+    # 设置自动下载文件选项
+    opt.add_argument("--download.prompt_for_download=false")  # 禁止弹出下载对话框
+    opt.add_argument("--browser.download.folderList=2")  # 禁止弹出下载对话框
+    opt.add_argument("--download.default_directory=" + download_path)  # 设置下载文件的保存路径
     # opt.add_argument('--disable-extensions')
     # opt.add_argument('--disable-infobars')
     # opt.add_argument('--disable-popup-blocking')
@@ -118,24 +122,24 @@ def get_new_chrome():
     # opt.add_argument('--start-maximized')
     # opt.add_argument('--disable-web-security')
     # opt.add_argument("--headless")  # 无头模式，可选
-    opt.add_argument("--disable-gpu")  # 禁用GPU加速，可选
-    opt.add_argument("--no-sandbox")  # 非沙盒模式，可选
-    opt.add_argument("--disable-popup-blocking")  # 禁用弹窗拦截，可选
-    opt.add_argument("--disable-infobars")  # 禁用信息栏，可选
-    prefs = {
-        # 设置下载路径
-        'download.default_directory': 'E:\\NC\\terminal\\template3\\',
-        'download.prompt_for_download': False,
-        'download.directory_upgrade': True,
-        'safebrowsing.enabled': True,
-        "safebrowsing.disable_download_protection": True,
-        "safebrowsing_for_trusted_sources_enabled": False,
-        "download_restrictions": 0,
-        "browser.download.folderList": 1,
-        # 设置为 2 禁止弹出窗口
-        "profile.default_content_settings.popups": 2
-    }
-    opt.add_experimental_option("prefs", prefs)
+    # opt.add_argument("--disable-gpu")  # 禁用GPU加速，可选
+    # opt.add_argument("--no-sandbox")  # 非沙盒模式，可选
+    # opt.add_argument("--disable-popup-blocking")  # 禁用弹窗拦截，可选
+    # opt.add_argument("--disable-infobars")  # 禁用信息栏，可选
+    # prefs = {
+    #     # 设置下载路径
+    #     'download.default_directory': 'E:\\NC\\terminal\\template3\\',
+    #     'download.prompt_for_download': False,
+    #     'download.directory_upgrade': True,
+    #     'safebrowsing.enabled': True,
+    #     "safebrowsing.disable_download_protection": True,
+    #     "safebrowsing_for_trusted_sources_enabled": False,
+    #     "download_restrictions": 0,
+    #     "browser.download.folderList": 1,
+    #     # 设置为 2 禁止弹出窗口
+    #     "profile.default_content_settings.popups": 2
+    # }
+    # opt.add_experimental_option("prefs", prefs)
     opt.binary_location = driver_location
     return webdriver.Chrome(options=opt)
 
@@ -174,18 +178,19 @@ def switch_to_new_window(driver):
     driver.switch_to.window(new_window_handle)
 
 
-def get_new_edge():
-    msedgedriver_path = "C:\\Users\\UMS-AUG\\Downloads\\msedgedriver.exe"
+def get_new_edge_driver():
+    msedgedriver_path = "/com/ada/python/drivers/edge/msedgedriver.exe"
     opt = Options()
     opt = webdriver.EdgeOptions()
-    download_path = "E:\\NC\\terminal\\template\\"
+    download_path = "E:\\NC\\terminal\\template"
     # 设置自动下载文件选项
-    opt.add_argument("--download.default_directory="+download_path)  # 设置下载文件的保存路径
     opt.add_argument("--download.prompt_for_download=false")  # 禁止弹出下载对话框
-    opt.add_argument("--browser.download.folderList=2")  # 禁止弹出下载对话框
-    # prefs = {
+    # opt.add_argument("--browser.download.folderList=2")  # 禁止弹出下载对话框
+    # opt.add_argument("--download.default_directory=E:/NC/terminal/template")  # 设置下载文件的保存路径
+    # opt.add_argument("--profile.default_content_settings.popups=2")
+    prefs = {
     #     # 设置下载路径
-    #     'download.default_directory': 'E:\\NC\\terminal\\template3\\',
+        'download.default_directory': download_path,
     #     # "download.prompt_for_download": False,  # 不询问下载路径
     #     # "download.directory_upgrade": True,
     #     # "safebrowsing.enabled": False
@@ -194,9 +199,9 @@ def get_new_edge():
     #     # "browser.download.folderList":2,
     #     # "browser.download.manager.showWhenStarting": False,
     #     # "profile.default_content_settings.popups": 2
-    # }
+    }
     # 
-    # opt.add_experimental_option("prefs", prefs)
+    opt.add_experimental_option("prefs", prefs)
     # 创建 Edge 服务
     service = Service(msedgedriver_path)
     driver = webdriver.Edge(service=service, options=opt)
@@ -215,7 +220,7 @@ def process_get_edge_driver():
 
     option = webdriver.EdgeOptions()
     option.add_experimental_option("debuggerAddress", "127.0.0.1:9527")
-    
+
     driver = webdriver.Edge(options=option)
     # 创建 Edge 配置选项
     options = Options()
@@ -344,9 +349,9 @@ def download_captcha_image(driver):
 
 if __name__ == "__main__":
     # driver = get_chrome()
-    # driver = get_new_chrome()
+    driver = get_new_edge_driver()
     # driver = process_get_edge_driver()
-    driver = get_new_edge()
+    # driver = get_new_edge_driver()
 
     # # 谷歌浏览路径
     # chrome_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
