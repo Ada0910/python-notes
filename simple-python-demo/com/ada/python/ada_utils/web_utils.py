@@ -40,20 +40,28 @@ def get_chrome_driver_location():
 
 创建 WebDriver 实例并连接到已经打开的浏览器
 
-方法一：
-需要先启动一个浏览器，并将其启动参数 `remote-debugging-port` 设置为可用的端口号
-例如 Chrome 浏览器可以在命令行中使用 `--remote-debugging-port=9222` 参数启动
-确保已经打开的浏览器支持远程调试，并且与指定的端口号匹配
-"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe --remote-debugging-port=9222"
+获取谷歌浏览器驱动的路径
+
+Args:
+    chrome_path：谷歌浏览器的路径如，r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+    remote_debugging_port：调试端口，默认9222
+    user_data_dir：文件保存路径
+Returns:
+    返回：谷歌浏览器驱动的路径
+
+Raises:
+    异常情况的说明（如果有的话）
+
+Remark:
+    方法一：
+    需要先启动一个浏览器，并将其启动参数 `remote-debugging-port` 设置为可用的端口号
+    例如 Chrome 浏览器可以在命令行中使用 `--remote-debugging-port=9222` 参数启动
+    确保已经打开的浏览器支持远程调试，并且与指定的端口号匹配
+    "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe --remote-debugging-port=9222"
 
 
-方法二：
-快捷方式添加 --remote-debugging-port=9222 --user-data-dir="E:\\PythonCode\\chrome-dir"
-
-参数实例
-# chrome_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
-# remote_debugging_port = 9222
-# user_data_dir = r"E:\PythonCode\chrome-dir"
+    方法二：
+    快捷方式添加 --remote-debugging-port=9222 --user-data-dir="E:\\PythonCode\\chrome-dir"
 """
 
 
@@ -71,6 +79,14 @@ def get_exist_chrome_driver(chrome_path, remote_debugging_port, user_data_dir):
 
 """
 创建 WebDriver 实例并打开一个新的浏览器实例
+
+Args:
+    无
+Returns:
+    返回：谷歌浏览器驱动driver
+
+Raises:
+    异常情况的说明（如果有的话）
 """
 
 
@@ -87,20 +103,3 @@ def get_new_chrome_driver():
     return webdriver.Chrome(options=opt)
 
 
-"""
-创建一个edge实例并打开
-"""
-
-
-def get_new_edge_driver(msedgedriver_path_name, download_path):
-    opt = webdriver.EdgeOptions()
-    # 设置自动下载文件选项
-    opt.add_argument("--download.prompt_for_download=false")  # 禁止弹出下载对话框
-    opt.add_argument("--browser.download.folderList=2")  # 禁止弹出下载对话框
-    opt.add_argument("--download.default_directory=" + download_path)  # 设置下载文件的保存路径
-    prefs = {
-        'download.default_directory': download_path}
-    opt.add_experimental_option("prefs", prefs)
-    # 创建 Edge 服务
-    service = Service(msedgedriver_path_name)
-    return webdriver.Edge(service=service, options=opt)
